@@ -44,3 +44,7 @@ body {
   border-radius: 10px;
   padding: 10px;
 }
+
+.login-form {
+  text-align: center;
+}
