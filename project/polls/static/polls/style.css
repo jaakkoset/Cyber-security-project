@@ -31,21 +31,21 @@ body {
   box-sizing: border-box;
 }
 
-/* login link */
-.login-link {
+/* Link for creating a poll */
+.create-link {
   text-decoration: none;
   color: rgb(0, 103, 0);
   font-weight: bold;
 }
 
-/* Highlight login link */
-.login-link:hover {
+/* Highlight create link */
+.create-link:hover {
   background-color: rgb(255, 188, 237);
   border-radius: 10px;
   padding: 10px;
 }
 
-/* Centre the login form */
-.login-form {
+/* Centre the create form */
+.create-form {
   text-align: center;
 }
