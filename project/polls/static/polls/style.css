@@ -2,12 +2,45 @@ body {
   background: rgb(188, 255, 188);
 }
 
+/* Centre the page title */
 .header {
   text-align: center;
   font-size: 3rem;
 }
 
+/* Edit the style of the title text */
 .header-link {
   color: rgb(0, 103, 0);
   text-decoration: none;
+}
+
+/* Highlight the page title */
+.header-link:hover {
+  background-color: rgb(255, 188, 237);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* Full-width bar */
+.top-bar {
+  width: 100%;
+  background-color: rgb(188, 190, 255);
+  display: flex;
+  justify-content: flex-end; /* content to the right */
+  padding: 10px 20px; /* padding around button */
+  box-sizing: border-box;
+}
+
+/* login link */
+.login-link {
+  text-decoration: none;
+  color: rgb(0, 103, 0);
+  font-weight: bold;
+}
+
+/* Highlight login link */
+.login-link:hover {
+  background-color: rgb(255, 188, 237);
+  border-radius: 10px;
+  padding: 10px;
 }
