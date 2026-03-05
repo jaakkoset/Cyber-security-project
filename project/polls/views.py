@@ -57,4 +57,19 @@ def vote(request, question_id):
 
 
 def login(request):
-    return render(request, "polls/login.html")
+    if request.method == "GET":
+        return render(request, "polls/login.html")
+    elif request.method == "POST":
+        print()
+        print(request.POST["username"])
+        print(request.POST["password"])
+        print()
+        return HttpResponseRedirect(reverse("polls:index"))
+
+
+def signup(request):
+    if request.method == "POST":
+        print(request.POST["username"])
+        print(request.POST["password1"])
+        print(request.POST["password2"])
+        return HttpResponseRedirect(reverse("polls:index"))
