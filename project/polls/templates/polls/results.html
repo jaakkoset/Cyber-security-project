@@ -5,6 +5,12 @@
     <title>Results page</title>
   </head>
   <body>
+    {% load static %}
+    <link
+      rel="stylesheet"
+      href="{% static 'polls/style.css' %}"
+    />
+    {% include "polls/header.html" %}
     <h1>{{ question.question_text }}</h1>
 
     <ul>

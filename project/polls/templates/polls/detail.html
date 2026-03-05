@@ -5,7 +5,12 @@
     <title>Voting page</title>
   </head>
   <body>
-
+    {% load static %}
+    <link
+      rel="stylesheet"
+      href="{% static 'polls/style.css' %}"
+    />
+    {% include "polls/header.html" %}
       <form
         action="{% url 'polls:vote' question.id %}"
         method="post"

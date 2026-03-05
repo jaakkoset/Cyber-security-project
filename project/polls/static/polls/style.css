@@ -1,3 +1,13 @@
 body {
-  background: rgb(155, 255, 155);
+  background: rgb(188, 255, 188);
+}
+
+.header {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.header-link {
+  color: rgb(0, 103, 0);
+  text-decoration: none;
 }

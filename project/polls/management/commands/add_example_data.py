@@ -26,7 +26,7 @@ class Command(BaseCommand):
         {"question": "Why?", "choices": ["I don't know", "Huh?"]},
         {"question": "What's up?", "choices": ["Not much", "The sky"]},
         {
-            "question": "There are too many brackets in JavaScript?",
+            "question": "JavaScript uses too many brackets?",
             "choices": ["Yes", "No, but acually yes"],
         },
     ]
