@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.views.decorators.http import require_POST
 from .models import Question, Choice
 
 
@@ -56,20 +57,25 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
 
 
-def login(request):
-    if request.method == "GET":
-        return render(request, "polls/login.html")
-    elif request.method == "POST":
-        print()
-        print(request.POST["username"])
-        print(request.POST["password"])
-        print()
-        return HttpResponseRedirect(reverse("polls:index"))
+def create(request):
+    """Returns the template for the poll creation page."""
+    return render(request, "polls/create.html")
 
 
-def signup(request):
-    if request.method == "POST":
-        print(request.POST["username"])
-        print(request.POST["password1"])
-        print(request.POST["password2"])
-        return HttpResponseRedirect(reverse("polls:index"))
+# 2 CSRF attack. The below line should be enabled.
+# @require_POST
+def save_poll(request):
+    """Saves the new polls into the database and redirects the user on the fron page."""
+    # if request.method == "GET":
+    #     print(request.GET["question"])
+    #     print(request.GET["choice1"])
+    #     print(request.GET["choice2"])
+    #     print(request.GET["choice3"])
+    #     print(request.GET["choice4"])
+    # if request.method == "POST":
+    #     print(request.POST["question"])
+    #     print(request.POST["choice1"])
+    #     print(request.POST["choice2"])
+    #     print(request.POST["choice3"])
+    #     print(request.POST["choice4"])
+    return HttpResponseRedirect(reverse("polls:index"))
