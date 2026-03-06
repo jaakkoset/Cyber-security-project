@@ -15,14 +15,17 @@
 
     <div class="create-form">
         <h2>Create a poll</h2>
+        <p>Add 2–4 choices<br>
+        * required
+        <form action="{% url 'polls:save-poll' %}" method="get">
+        <!-- The above line should use the method POST after the backend has been 
+         modified to be protected from CSRF attacks.
         <form action="{% url 'polls:save-poll' %}" method="post">
-        <!-- 2 CSRF attack. The above line should be replaced.
-        <form action="{% url 'polls:save-poll' %}" method="post"> 
         -->
             {% csrf_token %}
-            Question: <input type="text" name="question" />
-            <p>Choice 1: <input type="text" name="choice1" /></p>
-            <p>Choice 2: <input type="text" name="choice2" /></p>
+            Question*: <input type="text" name="question" />
+            <p>Choice 1*: <input type="text" name="choice1" /></p>
+            <p>Choice 2*: <input type="text" name="choice2" /></p>
             <p>Choice 3: <input type="text" name="choice3" /></p>
             <p>Choice 4: <input type="text" name="choice4" /></p>
             <input type="submit" value="Save poll" />

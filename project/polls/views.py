@@ -62,16 +62,18 @@ def create(request):
     return render(request, "polls/create.html")
 
 
-# 2 CSRF attack. The below line should be enabled.
+# 2 CSRF attack.
 # @require_POST
 def save_poll(request):
     """Saves the new polls into the database and redirects the user on the fron page."""
-    # if request.method == "GET":
-    #     print(request.GET["question"])
-    #     print(request.GET["choice1"])
-    #     print(request.GET["choice2"])
-    #     print(request.GET["choice3"])
-    #     print(request.GET["choice4"])
+    if request.method == "GET":
+        print(request.GET["question"])
+        print(request.GET["choice1"])
+        print(request.GET["choice2"])
+        print(request.GET["choice3"])
+        print(request.GET["choice4"])
+        print(request.GET)
+        print(request.POST)
     # if request.method == "POST":
     #     print(request.POST["question"])
     #     print(request.POST["choice1"])
