@@ -2,6 +2,17 @@ body {
   background: rgb(188, 255, 188);
 }
 
+/* Centre the polls list */
+div.polls-list {
+  text-align: center;
+}
+
+/* Align the list to the left */
+ul.polls-list {
+  display: inline-block;
+  text-align: left;
+}
+
 /* Centre the page title */
 .header {
   text-align: center;

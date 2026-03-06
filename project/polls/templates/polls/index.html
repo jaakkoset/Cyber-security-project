@@ -13,35 +13,37 @@
     />
     {% include "polls/header.html" %}
 
-    <!-- List of polls -->
-    {% if latest_question_list %}
-      <ul>
-      {% for question in latest_question_list %}
-        <li>
-            <a href="{% url 'polls:detail' question.id %}"
-            >{{ question.question_text }}</a
-            >
-        </li>
-      {% endfor %}
-      </ul>
-        
-      <!-- Pagination controls -->
-      <div>
-        <span>
-          {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; First</a>
-            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-          {% endif %}
+    <div class="polls-list">
+      <!-- List of polls -->
+      {% if latest_question_list %}
+        <ul class="polls-list">
+        {% for question in latest_question_list %}
+          <li class="polls-list">
+              <a href="{% url 'polls:detail' question.id %}"
+              >{{ question.question_text }}</a
+              >
+          </li>
+        {% endfor %}
+        </ul>
           
+        <!-- Pagination controls -->
+        <div>
           <span>
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            {% if page_obj.has_previous %}
+              <a href="?page=1">&laquo; First</a>
+              <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            
+            <span>
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">Next</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
           </span>
-          
-          {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">Next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-          {% endif %}
-        </span>
+        </div>
       </div>
 
     {% else %}
