@@ -37,23 +37,27 @@ ul.polls-list {
   width: 100%;
   background-color: rgb(188, 190, 255);
   display: flex;
-  justify-content: flex-end; /* content to the right */
   padding: 10px 20px; /* padding around button */
   box-sizing: border-box;
 }
 
-/* Link for creating a poll */
-.create-link {
+/* Link for creating a poll and login*/
+.button {
   text-decoration: none;
   color: rgb(0, 103, 0);
   font-weight: bold;
 }
 
-/* Highlight create link */
-.create-link:hover {
+/* Highlight the links */
+.button:hover {
   background-color: rgb(255, 188, 237);
   border-radius: 10px;
   padding: 10px;
+}
+
+/* Push the second button to the right */
+.top-bar a:last-child {
+  margin-left: auto;
 }
 
 /* Centre the create form */
