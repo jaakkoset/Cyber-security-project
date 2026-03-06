@@ -36,8 +36,27 @@ ul.polls-list {
   width: 100%;
   background-color: rgb(188, 190, 255);
   display: flex;
-  padding: 10px 20px; /* padding around button */
+  align-items: center;
+  padding: 10px 20px;
   box-sizing: border-box;
+}
+
+/* left section */
+.top-left {
+  flex: 1;
+}
+
+/* center section */
+.top-center {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* right section */
+.top-right {
+  flex: 1;
+  text-align: right;
 }
 
 /* Link for creating a poll and login*/
@@ -52,11 +71,6 @@ ul.polls-list {
   background-color: rgb(255, 188, 237);
   border-radius: 10px;
   padding: 10px;
-}
-
-/* Push the second button to the right */
-.top-bar a:last-child {
-  margin-left: auto;
 }
 
 /* Centre the create form */
