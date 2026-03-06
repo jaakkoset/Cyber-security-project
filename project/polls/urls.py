@@ -15,4 +15,5 @@ urlpatterns = [
     path("save-poll/", views.save_poll, name="save-poll"),
     path("login/", views.login, name="login"),
     path("signup/", views.signup, name="signup"),
+    path("logout/", views.logout_route, name="logout"),
 ]

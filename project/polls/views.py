@@ -6,6 +6,7 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import logout
 from django.views.decorators.http import require_POST
 from .models import Question, Choice
 
@@ -133,4 +134,9 @@ def signup(request):
 
         return HttpResponseRedirect(reverse("polls:index"))
 
+    return HttpResponseRedirect(reverse("polls:index"))
+
+
+def logout_route(request):
+    logout(request)
     return HttpResponseRedirect(reverse("polls:index"))
