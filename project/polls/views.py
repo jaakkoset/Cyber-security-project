@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login as auth_login
 from django.views.decorators.http import require_POST
 from .models import Question, Choice
 
@@ -84,10 +86,51 @@ def save_poll(request):
 
 
 def login(request):
+    """Login to a user account."""
     if request.method == "GET":
         return render(request, "polls/login.html")
-    return HttpResponseRedirect(reverse("polls:index"))
+
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            auth_login(request, user)
+            return HttpResponseRedirect(reverse("polls:index"))
+        else:
+            return render(
+                request,
+                "polls/login.html",
+                {"login_error_message": "Invalid username or password"},
+            )
 
 
 def signup(request):
+    """Create new user accounts."""
+    if request.method == "POST":
+        username = request.POST["username"]
+        password1 = request.POST["password1"]
+        password2 = request.POST["password2"]
+
+        if password1 != password2:
+            return render(
+                request,
+                "polls/login.html",
+                {"signup_error_message": "Passwords do not match."},
+            )
+
+        if User.objects.filter(username=username).exists():
+            return render(
+                request,
+                "polls/login.html",
+                {"signup_error_message": "Username already exists."},
+            )
+
+        user = User.objects.create_user(username=username, password=password1)
+        auth_login(request, user)
+
+        return HttpResponseRedirect(reverse("polls:index"))
+
     return HttpResponseRedirect(reverse("polls:index"))

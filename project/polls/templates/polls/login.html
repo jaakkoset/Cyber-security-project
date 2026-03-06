@@ -15,6 +15,9 @@
 
         <div class="center">
             <h2>Log in</h2>
+            {% if login_error_message %}
+                <p style="color:red">{{ login_error_message }}</p>
+            {% endif %}
             <form action="{% url 'polls:login' %}" method="post">
                 {% csrf_token %}
                 Username: <input type="text" name="username" />
@@ -23,6 +26,9 @@
             </form>
 
             <h2>Create a new user</h2>
+            {% if signup_error_message %}
+                <p style="color:red">{{ signup_error_message }}</p>
+            {% endif %}
             <form action="{% url 'polls:signup' %}" method="post">
                 {% csrf_token %}
                 Username: <input type="text" name="username" />
