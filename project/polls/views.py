@@ -81,3 +81,13 @@ def save_poll(request):
     #     print(request.POST["choice3"])
     #     print(request.POST["choice4"])
     return HttpResponseRedirect(reverse("polls:index"))
+
+
+def login(request):
+    if request.method == "GET":
+        return render(request, "polls/login.html")
+    return HttpResponseRedirect(reverse("polls:index"))
+
+
+def signup(request):
+    return HttpResponseRedirect(reverse("polls:index"))
