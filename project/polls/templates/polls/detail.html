@@ -32,10 +32,14 @@
           ><br />
           {% endfor %}
         </fieldset>
-        <input
-          type="submit"
-          value="Vote"
-        />
+        {% if request.user.is_authenticated %}
+          <input
+            type="submit"
+            value="Vote"
+          />
+        {% else %}
+          <i>Only users can vote</i>
+        {% endif %}
       </form>
     </ul>
   </body>

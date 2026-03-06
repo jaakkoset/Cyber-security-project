@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from .models import Question, Choice
 
@@ -37,6 +38,7 @@ class ResultsView(generic.DetailView):
     template_name = "polls/results.html"
 
 
+# @login_required
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -60,6 +62,7 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
 
 
+@login_required
 def create(request):
     """Returns the template for the poll creation page."""
     return render(request, "polls/create.html")
@@ -67,8 +70,10 @@ def create(request):
 
 # 2 CSRF attack.
 # @require_POST
+# @login_required
 def save_poll(request):
     """Saves the new polls into the database and redirects the user on the fron page."""
+    print("\nSave-poll\n")
     if request.method == "GET":
         print(request.GET["question"])
         print(request.GET["choice1"])
