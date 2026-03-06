@@ -10,6 +10,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from .models import Question, Choice
+from . import database
 
 
 class IndexView(generic.ListView):
@@ -68,26 +69,31 @@ def create(request):
     return render(request, "polls/create.html")
 
 
-# 2 CSRF attack.
+# Fix for CSRF attack.
 # @require_POST
 # @login_required
 def save_poll(request):
-    """Saves the new polls into the database and redirects the user on the fron page."""
-    print("\nSave-poll\n")
-    if request.method == "GET":
-        print(request.GET["question"])
-        print(request.GET["choice1"])
-        print(request.GET["choice2"])
-        print(request.GET["choice3"])
-        print(request.GET["choice4"])
-        print(request.GET)
-        print(request.POST)
-    # if request.method == "POST":
-    #     print(request.POST["question"])
-    #     print(request.POST["choice1"])
-    #     print(request.POST["choice2"])
-    #     print(request.POST["choice3"])
-    #     print(request.POST["choice4"])
+    """Saves the new polls into the database and redirects the user on the front page."""
+    # Check that inputs are not empty
+    if not (
+        request.GET["question"] and request.GET["choice1"] and request.GET["choice2"]
+    ):
+        return render(
+            request,
+            "polls/create.html",
+            {"error_message": "Fill the required fields"},
+        )
+    database.save_poll(request.GET)
+
+    # Fix for CSRF attack
+    # if not (request.POST["question"] and request.POST["choice1"] and request.POST["choice2"]):
+    #     return render(
+    #         request,
+    #         "polls/create.html",
+    #         {"error_message": "Fill the required fields"},
+    #     )
+    # database.save_poll(request.POST)
+
     return HttpResponseRedirect(reverse("polls:index"))
 
 
@@ -120,6 +126,12 @@ def signup(request):
         password1 = request.POST["password1"]
         password2 = request.POST["password2"]
 
+        if not (username and password1 and password2):
+            return render(
+                request,
+                "polls/login.html",
+                {"signup_error_message": "Username and password are required."},
+            )
         if password1 != password2:
             return render(
                 request,
@@ -127,12 +139,12 @@ def signup(request):
                 {"signup_error_message": "Passwords do not match."},
             )
 
-        if User.objects.filter(username=username).exists():
-            return render(
-                request,
-                "polls/login.html",
-                {"signup_error_message": "Username already exists."},
-            )
+        # if User.objects.filter(username=username).exists():
+        #     return render(
+        #         request,
+        #         "polls/login.html",
+        #         {"signup_error_message": "Username already exists."},
+        #     )
 
         user = User.objects.create_user(username=username, password=password1)
         auth_login(request, user)

@@ -17,6 +17,9 @@
         <h2>Create a poll</h2>
         <p>Add 2–4 choices<br>
         * required
+        {% if error_message %}
+            <p style="color:red">{{ error_message }}</p>
+        {% endif %}
         <form action="{% url 'polls:save-poll' %}" method="get">
         <!-- The above line should use the method POST after the backend has been 
          modified to be protected from CSRF attacks.
