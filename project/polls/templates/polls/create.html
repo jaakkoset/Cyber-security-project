@@ -21,6 +21,9 @@
             <p style="color:red">{{ error_message }}</p>
         {% endif %}
         <form action="{% url 'polls:save-poll' %}" method="get">
+        <!--
+        <form action="{% url 'polls:save-poll' %}" method="get">
+        -->
             Question*: <input type="text" name="question" />
             <p>Choice 1*: <input type="text" name="choice1" /></p>
             <p>Choice 2*: <input type="text" name="choice2" /></p>
