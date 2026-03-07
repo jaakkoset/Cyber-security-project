@@ -21,11 +21,6 @@
             <p style="color:red">{{ error_message }}</p>
         {% endif %}
         <form action="{% url 'polls:save-poll' %}" method="get">
-        <!-- The above line should use the method POST after the backend has been 
-         modified to be protected from CSRF attacks.
-        <form action="{% url 'polls:save-poll' %}" method="post">
-        -->
-            {% csrf_token %}
             Question*: <input type="text" name="question" />
             <p>Choice 1*: <input type="text" name="choice1" /></p>
             <p>Choice 2*: <input type="text" name="choice2" /></p>

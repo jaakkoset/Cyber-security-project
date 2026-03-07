@@ -63,15 +63,13 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
 
 
-@login_required
 def create(request):
     """Returns the template for the poll creation page."""
     return render(request, "polls/create.html")
 
 
-# Fix for CSRF attack.
 # @require_POST
-# @login_required
+@login_required
 def save_poll(request):
     """Saves the new polls into the database and redirects the user on the front page."""
     # Check that inputs are not empty
@@ -139,12 +137,12 @@ def signup(request):
                 {"signup_error_message": "Passwords do not match."},
             )
 
-        # if User.objects.filter(username=username).exists():
-        #     return render(
-        #         request,
-        #         "polls/login.html",
-        #         {"signup_error_message": "Username already exists."},
-        #     )
+        if User.objects.filter(username=username).exists():
+            return render(
+                request,
+                "polls/login.html",
+                {"signup_error_message": "Username already exists."},
+            )
 
         user = User.objects.create_user(username=username, password=password1)
         auth_login(request, user)
