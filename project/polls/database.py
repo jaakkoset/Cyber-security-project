@@ -1,19 +1,24 @@
 import sqlite3
 
 
-def save_poll(body):
+def save_poll(data):
     connection = sqlite3.connect("db.sqlite3")
     connection.row_factory = sqlite3.Row
 
-    question_id = save_question(connection, body["question"])
+    question_id = save_question(connection, data["question"])
+
+    # Create a list of tuples. Each tuple represents a choice:
+    # (choice_text, votes, question_id)
     choices = [
-        (body[c], 0, question_id)
+        (data[c], 0, question_id)
         for c in ["choice1", "choice2", "choice3", "choice4"]
-        if body[c]
+        # Skip empty choices
+        if data[c]
     ]
 
     save_choices(connection, choices)
 
+    # connection.commit()
     connection.close()
 
     return True

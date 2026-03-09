@@ -1,6 +1,7 @@
 from django.db.models import F
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
@@ -72,7 +73,20 @@ def create(request):
 @login_required
 def save_poll(request):
     """Saves the new polls into the database and redirects the user on the front page."""
-    # Check that inputs are not empty
+
+    # # Check that the request has all the expected data
+    # try:
+    #     data = {
+    #         "question": request.GET["question"],
+    #         "choice1": request.GET["choice1"],
+    #         "choice2": request.GET["choice2"],
+    #         "choice3": request.GET["choice3"],
+    #         "choice4": request.GET["choice4"],
+    #     }
+    # except:
+    #     return HttpResponse(content="Request data was malformed", status=400)
+
+    # Check that required inputs are not empty
     if not (
         request.GET["question"] and request.GET["choice1"] and request.GET["choice2"]
     ):
@@ -81,6 +95,7 @@ def save_poll(request):
             "polls/create.html",
             {"error_message": "Fill the required fields"},
         )
+    # Save the poll into the database
     database.save_poll(request.GET)
 
     # Fix for CSRF attack
