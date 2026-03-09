@@ -15,8 +15,7 @@
 
     <div class="create-form">
         <h2>Create a poll</h2>
-        <p>Add 2–4 choices<br>
-        * required
+        <p>* required</p>
         {% if error_message %}
             <p style="color:red">{{ error_message }}</p>
         {% endif %}
@@ -24,6 +23,7 @@
         <!-- <form action="{% url 'polls:save-poll' %}" method="post"> -->
             {% csrf_token %}
             Question*: <input type="text" name="question" />
+            <p>Add 2–4 choices<br>
             <p>Choice 1*: <input type="text" name="choice1" /></p>
             <p>Choice 2*: <input type="text" name="choice2" /></p>
             <p>Choice 3: <input type="text" name="choice3" /></p>
