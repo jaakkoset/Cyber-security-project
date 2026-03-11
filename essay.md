@@ -133,7 +133,7 @@ The given url is missing choice3 and choice4. The application expects empty stri
 choices, but when they are omitted entirely, the code raises an error when trying to access those keys in the request dictionary. The error happens at this line, where “choice3” and “choice4” are hard-coded:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L14
 
-Critically, the error happens after the question has been added to the database, but before the choices for the question have been added. This is why a poll without choices is created.
+Critically, the error happens after the question has been added to the database, but before the choices for the question have been added. This is why a poll without choices is created. This problem belongs to the OWASP A10 Mishandling of Exceptional Conditions -category.
 
 There are to fixes to the problem. The first fix is to make sure that the question and choices are committed to the database at the same time. This is done by uncommenting the line
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L21
