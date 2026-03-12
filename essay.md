@@ -36,9 +36,11 @@ The example data adds two users (username:password):
     bob:squarepants
     alice:redqueen
 
+You can always delete the database (db.sqlite3) and recreate it using the migrate command.
+
 FLAW 1. CSRF attack.
 
-The flaw is in the save_poll route function:
+The flaw in in the save_poll route function:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L74
 
 The save_poll route function is vulnerable to CSRF attacks. If a user is logged-in and he visits a malicious website, that site can add polls without the users knowledge. This is possible because save_poll does not have any CSRF checks.
@@ -49,17 +51,23 @@ To demonstrate the attack, log in at http://localhost:8000/polls/. In a new term
 
 Then, in a new browser tab, open this page:
 
-    http://localhost:9000/csrf.html
+    http://localhost:9000/csrf_get.html
 
-Reloading http://localhost:8000/polls/ will now reveal that a new malicious poll has been added.
+Reloading http://localhost:8000/polls/ will now reveal that a new evil poll has been added. The screenshot flaw1-before-terminal.png shows that the request to add the poll is not rejected, and the screenshot flaw1-before-browser.png shows that the “Evil poll” has been added.
 
-The vulnerability is easily fixed by changing the save_poll function to use POST requests. Django automatically checks the CSRF token with POST requests. Lines 72 and 102-108 in save_poll have the fixed code commented out:
+The vulnerability is fixed by changing the save_poll function to use POST requests. Django automatically checks the CSRF token with POST requests. Lines 72 and 102-108 in save_poll have the fixed code commented out:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L72
 
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L102-L108
 
 Also, the corresponding html form should be modified to send POST requests:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/templates/polls/create.html#L23
+
+Now we can try reapeating the CSRF attack, but this time we should load the page
+
+    http://localhost:9000/csrf_post.html
+
+because we want to use POST requests. However, this time Django automatically checks the CSRF token and rejects the request. This can be seen from the screenshots flaw1-after-terminal.png and flaw1-after-browser.png.
 
 FLAW 2. Voting without logging in.
 
@@ -133,7 +141,7 @@ The given url is missing choice3 and choice4. The application expects empty stri
 choices, but when they are omitted entirely, the code raises an error when trying to access those keys in the request dictionary. The error happens at this line, where “choice3” and “choice4” are hard-coded:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L14
 
-Critically, the error happens after the question has been added to the database, but before the choices for the question have been added. This is why a poll without choices is created. This problem belongs to the OWASP A10 Mishandling of Exceptional Conditions -category.
+Critically, the error happens after the question has been added to the database, but before the choices for the question have been added. This is why a poll without choices is created.
 
 There are to fixes to the problem. The first fix is to make sure that the question and choices are committed to the database at the same time. This is done by uncommenting the line
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L21
