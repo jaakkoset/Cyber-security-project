@@ -139,8 +139,9 @@ https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw
 ### FLAW 5. Mishandling of exceptional conditions
 
 User can create a poll that has no choices, as shown in screenshot https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw5-before-poll.png
-This can happen when the user modifies the url by removing choices, for example like this (note that the url has spaces): [http://localhost:8000/polls/save-poll/?question=How much do you sleep?&choice1=less than 8 hours.&choice2=at least 8 hours](
-http://localhost:8000/polls/save-poll/?question=How much do you sleep?&choice1=less than 8 hours.&choice2=at least 8 hours)
+This can happen when the user modifies the url by removing choices, for example like this (note that the url has spaces):
+
+    http://localhost:8000/polls/save-poll/?question=How much do you sleep?&choice1=less than 8 hours.&choice2=at least 8 hours
 
 The given url is missing choice3 and choice4. The application expects empty strings for missing
 choices, but when they are omitted entirely, the code raises an error when trying to access those keys in the request dictionary. The error happens at the following line, where “choice3” and “choice4” are hard-coded:
@@ -155,7 +156,7 @@ https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/da
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L67
 This way either both the question and choices are save to the database or, if something goes wrong, nothing is.
 
-That still causes an error however. To prevent that from happening, a second fix is needed. The code is commented out at lines
+That still causes an error however. To prevent that from happening, a second fix is needed. The fixed code is commented out at lines
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L78-L87
 
 The code checks that the request data has everything as exepcted. If something is missing, an error is displayed to the user, as shown in this sreenshot:
