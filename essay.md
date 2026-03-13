@@ -1,3 +1,5 @@
+## Essay
+
 Project I
 
 I am referring to the OWASP 2025 list in this project.
@@ -27,7 +29,7 @@ You can add example data in the database (not required for the application to wo
 
     (virtual-env) $ python3 manage.py add_example_data
 
-Start the application:
+Start the application (at http://localhost:8000/polls/):
 
     (virtual-env) $ python3 manage.py runserver
 
@@ -38,7 +40,7 @@ The example data adds two users (username:password):
 
 You can always delete the database (db.sqlite3) and recreate it using the migrate command.
 
-FLAW 1. CSRF attack.
+### FLAW 1. CSRF attack.
 
 The flaw in in the save_poll route function:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L74
@@ -63,13 +65,13 @@ https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/vi
 Also, the corresponding html form should be modified to send POST requests:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/templates/polls/create.html#L23
 
-Now we can try reapeating the CSRF attack, but this time we should load the page
+Now we can try reapeating the CSRF attack, but because we want to use POST requests this time, we should load the page
 
     http://localhost:9000/csrf_post.html
 
-because we want to use POST requests. However, this time Django automatically checks the CSRF token and rejects the request. This can be seen from the screenshots flaw1-after-terminal.png and flaw1-after-browser.png.
+However, now Django automatically checks the CSRF token and rejects the request. This can be seen from the screenshots flaw1-after-terminal.png and flaw1-after-browser.png.
 
-FLAW 2. Voting without logging in.
+### FLAW 2. Voting without logging in.
 
 The source of the flaw is in the vote route function:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L43
@@ -79,21 +81,23 @@ Voting should be possible only to users. The voting functionality is hidden from
 The vulnerability can be demonstrated by running the following code in a browser console (as shown in screenshot
 https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw2-before-browser_before_refreshing.png):
 
+```
 var csrf_token = document.cookie.match(/csrftoken=([^;]+)/)[1]
 
 fetch("/polls/6/vote/", {
-method: "POST",
-headers: {
-"Content-Type": "application/x-www-form-urlencoded",
-"X-CSRFToken": csrf_token
-},
-body: "choice=15"
+  method: "POST",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+    "X-CSRFToken": csrf_token
+  },
+  body: "choice=15"
 })
+```
 
 The problem can be fixed using Django’s @login_required-decorator. This ensures that only logged in users can send requests to the route function. The one-line-fix is commented out here:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L43
 
-FLAW 3. SQL injection
+### FLAW 3. SQL injection
 
 Source of the problem is in the save_question function in database.py:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L30-L37
@@ -114,7 +118,7 @@ https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/da
 
 After the fix, the input is treated as text and not as SQL code. This is illustrated in the screenshot https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw3-after.png
 
-FLAW 4. Outdated dependency
+### FLAW 4. Outdated dependency
 
 The version of Django is set in the requirements.txt file:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/requirements.txt#L2
@@ -132,25 +136,27 @@ To fix the problem one should upgrade Django to a supported version. In this cas
 Here is a view of the terminal after doing that:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw4-after.png
 
-FLAW 5. Mishandling of exceptional conditions
+### FLAW 5. Mishandling of exceptional conditions
 
 User can create a poll that has no choices, as shown in screenshot https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw5-before-poll.png
-This can happen when the user modifies the url by removing choices. For example like this:
-http://localhost:8000/polls/save-poll/?question=How much do you sleep?&choice1=less than 8 hours.&choice2=at least 8 hours
+This can happen when the user modifies the url by removing choices, for example like this (note that the url has spaces): [http://localhost:8000/polls/save-poll/?question=How much do you sleep?&choice1=less than 8 hours.&choice2=at least 8 hours](
+http://localhost:8000/polls/save-poll/?question=How much do you sleep?&choice1=less than 8 hours.&choice2=at least 8 hours)
+
 The given url is missing choice3 and choice4. The application expects empty strings for missing
-choices, but when they are omitted entirely, the code raises an error when trying to access those keys in the request dictionary. The error happens at this line, where “choice3” and “choice4” are hard-coded:
+choices, but when they are omitted entirely, the code raises an error when trying to access those keys in the request dictionary. The error happens at the following line, where “choice3” and “choice4” are hard-coded:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L14
 
 Critically, the error happens after the question has been added to the database, but before the choices for the question have been added. This is why a poll without choices is created.
 
-There are to fixes to the problem. The first fix is to make sure that the question and choices are committed to the database at the same time. This is done by uncommenting the line
+There are two fixes to the problem. The first fix is to make sure that the question and choices are committed to the database at the same time. This is done by uncommenting the line
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L21
 and removing lines
-https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L50
+https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L50 and
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L67
 This way either both the question and choices are save to the database or, if something goes wrong, nothing is.
 
-That still causes an error however. To prevent that from happening, a commented out fix is added at lines
+That still causes an error however. To prevent that from happening, a second fix is needed. The code is commented out at lines
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L78-L87
+
 The code checks that the request data has everything as exepcted. If something is missing, an error is displayed to the user, as shown in this sreenshot:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw5-after.png
