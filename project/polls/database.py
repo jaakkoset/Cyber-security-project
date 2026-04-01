@@ -18,7 +18,7 @@ def save_poll(data):
 
     save_choices(connection, choices)
 
-    # connection.commit()
+    connection.commit()
     connection.close()
 
     return True
@@ -47,7 +47,6 @@ def save_question(connection, question):
     #     [question],
     # )
 
-    connection.commit()
     return cursor.lastrowid
 
 
@@ -63,5 +62,3 @@ def save_choices(connection, choices):
         """,
         choices,
     )
-
-    connection.commit()

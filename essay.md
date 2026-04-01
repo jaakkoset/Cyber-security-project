@@ -136,25 +136,20 @@ To fix the problem one should upgrade Django to a supported version. In this cas
 Here is a view of the terminal after doing that:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw4-after.png
 
-### FLAW 5. Mishandling of exceptional conditions
+FLAW 5. Security misconfiguration / Mishandling of exceptional conditions
 
-User can create a poll that has no choices, as shown in screenshot https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw5-before-poll.png
-This can happen when the user modifies the url by removing choices, for example like this (note that the url has spaces):
+OWASP category: A02:2025 Security Misconfiguration OR A10:2025 Mishandling of Exceptional Conditions
+
+User can cause an error, that displays too much information. This is because the server is in development mode and shows infromative error messages. To fix this, the line 26 in config/settings.py should be changed to DEBUG = False.
+
+The user can intentionally cause an error for example when creating polls, by removing some choices from the URL. Here is an example (note that the URL has spaces):
 
     http://localhost:8000/polls/save-poll/?question=How much do you sleep?&choice1=less than 8 hours.&choice2=at least 8 hours
 
-The given url is missing choice3 and choice4. The application expects empty strings for missing
-choices, but when they are omitted entirely, the code raises an error when trying to access those keys in the request dictionary. The error happens at the following line, where “choice3” and “choice4” are hard-coded:
+The given url is missing choice3 and choice4. The application expects empty strings for missing choices, but when the variables are omitted entirely, the code raises an error when trying to access them in the request dictionary. The error happens at the following line, where “choice3” and “choice4” are hard-coded:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L14
 
-Critically, the error happens after the question has been added to the database, but before the choices for the question have been added. This is why a poll without choices is created.
-
-There are two fixes to the problem. The first fix is to make sure that the question and choices are committed to the database at the same time. This is done by uncommenting the line
-https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L21
-and removing lines
-https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L50 and
-https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L67
-This way either both the question and choices are save to the database or, if something goes wrong, nothing is.
+_Insert fixes and stuff_
 
 That still causes an error however. To prevent that from happening, a second fix is needed. The fixed code is commented out at lines
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L78-L87
