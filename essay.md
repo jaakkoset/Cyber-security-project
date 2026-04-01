@@ -136,22 +136,23 @@ To fix the problem one should upgrade Django to a supported version. In this cas
 Here is a view of the terminal after doing that:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw4-after.png
 
-FLAW 5. Security misconfiguration / Mishandling of exceptional conditions
+### FLAW 5. Security misconfiguration / Mishandling of exceptional conditions
 
 OWASP category: A02:2025 Security Misconfiguration OR A10:2025 Mishandling of Exceptional Conditions
 
-User can cause an error, that displays too much information. This is because the server is in development mode and shows infromative error messages. To fix this, the line 26 in config/settings.py should be changed to DEBUG = False.
-
-The user can intentionally cause an error for example when creating polls, by removing some choices from the URL. Here is an example (note that the URL has spaces):
+User can cause an error, that reveals too much information. This is because the server is in development mode and shows too infromative error messages. The revealed infromation can for example be used to find exploits. One way to intentionally cause an error is for example by creating polls with a tampered URL. Here is an example (note that the URL has spaces):
 
     http://localhost:8000/polls/save-poll/?question=How much do you sleep?&choice1=less than 8 hours.&choice2=at least 8 hours
 
 The given url is missing choice3 and choice4. The application expects empty strings for missing choices, but when the variables are omitted entirely, the code raises an error when trying to access them in the request dictionary. The error happens at the following line, where “choice3” and “choice4” are hard-coded:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L14
 
-_Insert fixes and stuff_
+To fix the problem, the line 26 in config/settings.py should be changed to DEBUG = False. Now Django will show only very basic error messages. However, we need do some modifications to the application, because after we change the DEBUG setting, Django does not anymore serve static files (the style.css in this case). To fix that, a middleware named Whitenoise has already been installed in the requirements. It should work without any further actions.
 
-That still causes an error however. To prevent that from happening, a second fix is needed. The fixed code is commented out at lines
+_Include maybe_
+
+Now, when the we use the URL link above, the error shown does not reveal anything it should not. We can also prevent the error from happening, by checking the inputs. A fix is commented out at lines
+
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L78-L87
 
 The code checks that the request data has everything as exepcted. If something is missing, an error is displayed to the user, as shown in this sreenshot:
