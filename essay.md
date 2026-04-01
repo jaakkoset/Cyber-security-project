@@ -129,7 +129,7 @@ The project uses the Django version 5.1.15, which is unsupported as is listed he
 https://www.djangoproject.com/download/
 This problem belongs to the OWASP A06 Outdated component -category.
 
-To fix the problem one should upgrade Django to a supported version. In this case it is possible to upgrade to the latest version without breaking anything. To upgrade use this command:
+To fix the problem one should upgrade Django to a supported version. In this case it is possible to upgrade to the latest Django version without causing any problems in the application. To upgrade use this command:
 
     (virtual-env) $ pip install --upgrade django
 
