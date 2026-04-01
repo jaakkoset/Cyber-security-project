@@ -1,0 +1,79 @@
+body {
+  background: rgb(188, 255, 188);
+}
+
+/* Centre div elements */
+div.center {
+  text-align: center;
+}
+
+/* Align the list to the left */
+ul.polls-list {
+  display: inline-block;
+  text-align: left;
+}
+/* Centre the page title */
+.header {
+  text-align: center;
+  font-size: 3rem;
+}
+
+/* Edit the style of the title text */
+.header-link {
+  color: rgb(0, 103, 0);
+  text-decoration: none;
+}
+
+/* Highlight the page title */
+.header-link:hover {
+  background-color: rgb(255, 188, 237);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* Full-width bar */
+.top-bar {
+  width: 100%;
+  background-color: rgb(188, 190, 255);
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+/* left section */
+.top-left {
+  flex: 1;
+}
+
+/* center section */
+.top-center {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* right section */
+.top-right {
+  flex: 1;
+  text-align: right;
+}
+
+/* Link for creating a poll and login*/
+.button {
+  text-decoration: none;
+  color: rgb(0, 103, 0);
+  font-weight: bold;
+}
+
+/* Highlight the links */
+.button:hover {
+  background-color: rgb(255, 188, 237);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* Centre the create form */
+.create-form {
+  text-align: center;
+}
