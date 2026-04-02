@@ -136,24 +136,42 @@ To fix the problem one should upgrade Django to a supported version. In this cas
 Here is a view of the terminal after doing that:
 https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw4-after.png
 
-### FLAW 5. Security misconfiguration / Mishandling of exceptional conditions
+### FLAW 5. Security misconfiguration
 
-OWASP category: A02:2025 Security Misconfiguration OR A10:2025 Mishandling of Exceptional Conditions
+OWASP category: A02:2025 Security Misconfiguration
 
-User can cause an error, that reveals too much information. This is because the server is in development mode and shows too infromative error messages. The revealed infromation can for example be used to find exploits. One way to intentionally cause an error is for example by creating polls with a tampered URL. Here is an example (note that the URL has spaces):
+User can intentionally cause an error, that reveals sensitive information about the server. This happens because the server is running in development mode, which shows overly infromative error messages. The revealed infromation can for example be used to find exploits.
+
+One way to intentionally cause an error is by creating a tampered URL. Here is an example (note that the URL has spaces):
 
     http://localhost:8000/polls/save-poll/?question=How much do you sleep?&choice1=less than 8 hours.&choice2=at least 8 hours
 
-The given url is missing choice3 and choice4. The application expects empty strings for missing choices, but when the variables are omitted entirely, the code raises an error when trying to access them in the request dictionary. The error happens at the following line, where “choice3” and “choice4” are hard-coded:
+The given url is missing choice3 and choice4. The application expects empty strings for missing choices, but when the variables are omitted entirely, the code raises an error when trying to access those keys in the request dictionary. The error happens at the following line, where “choice3” and “choice4” are hard-coded:
+
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L14
 
-To fix the problem, the line 26 in config/settings.py should be changed to DEBUG = False. Now Django will show only very basic error messages. However, we need do some modifications to the application, because after we change the DEBUG setting, Django does not anymore serve static files (the style.css in this case). To fix that, a middleware named Whitenoise has already been installed in the requirements. It should work without any further actions.
+To fix the problem, the line 27 in config/settings.py should be changed to DEBUG = False:
 
-_Include maybe_
+_url-link-to-line-27_
 
-Now, when the we use the URL link above, the error shown does not reveal anything it should not. We can also prevent the error from happening, by checking the inputs. A fix is commented out at lines
+Now Django will show only very basic error messages.
+
+However, after setting DEBUG = False, Django does not anymore serve static files (the style.css in this case). To fix that, a middleware called Whitenoise has already been added to the projects dependecies. It requires some configuration in project/config/settings.py, but these settings are already in place and do not need to be changed:
+
+_url-to-line-31_
+
+_url-to-line-49_
+
+_url-to-line-125_
+
+After the fix, when the we use the URL link above, the error shown does not reveal anything it should not, as shown here:
+
+_url-link-to-screenshot_
+
+We can also prevent the error from happening, by validating the request data and returning an HTML status code for the user. (This aspect of the problem belongs more closely to the A10:2025 Mishandling of Exceptional Conditions category.) A fix for this is commented out here:
 
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L78-L87
 
-The code checks that the request data has everything as exepcted. If something is missing, an error is displayed to the user, as shown in this sreenshot:
-https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw5-after.png
+Now the server does not experience an error and an appropriate HTML status code is shown to the user:
+
+_url-link-to-screenshot_

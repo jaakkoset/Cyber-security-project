@@ -23,8 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-_k6xf7%^p%*7%)x+q@ymzv5m(9$q!8+45_jz8hz2$urbtn1tat"
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Flaw 5.
 DEBUG = True
+# DEBUG = False
 
+# Flaw 5. ALLOWED_HOSTS must be defined when DEBUG = False.
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 LOGIN_URL = "/polls/login/"
@@ -43,7 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Flaw 5
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -119,4 +122,5 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# Flaw 5. Whitenoise needs this to find the static files.
 STATIC_ROOT = BASE_DIR / "staticfiles"
