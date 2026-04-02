@@ -36,7 +36,7 @@ def save_question(connection, question):
         """
     )
 
-    # Fix for SQL injection
+    # Flaw 3. SQL injection fix. Remove the lines above.
     # cursor.execute(
     #     """
     #         INSERT INTO polls_question

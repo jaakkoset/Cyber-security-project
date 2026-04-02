@@ -40,6 +40,7 @@ class ResultsView(generic.DetailView):
     template_name = "polls/results.html"
 
 
+# Flaw 2 fix
 # @login_required
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -69,12 +70,14 @@ def create(request):
     return render(request, "polls/create.html")
 
 
+# Flaw 1. CSRF attack fix
 # @require_POST
 @login_required
 def save_poll(request):
     """Saves the new polls into the database and redirects the user on the front page."""
 
-    # # Check that the request has all the expected data
+    # Flaw 5
+    # # Validate the request data to prevent errors
     # try:
     #     data = {
     #         "question": request.GET["question"],
@@ -98,8 +101,10 @@ def save_poll(request):
     # Save the poll into the database
     database.save_poll(request.GET)
 
-    # Fix for CSRF attack
-    # if not (request.POST["question"] and request.POST["choice1"] and request.POST["choice2"]):
+    # Flaw 1. CSRF attack fix. Remove the lines above, that use GET.
+    # if not (
+    #     request.POST["question"] and request.POST["choice1"] and request.POST["choice2"]
+    # ):
     #     return render(
     #         request,
     #         "polls/create.html",
