@@ -62,7 +62,7 @@ https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/vi
 
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/views.py#L105-L113
 
-Also, the corresponding html form should be modified to send POST requests:
+Also, the corresponding HTML form should be modified to send POST requests:
 
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/templates/polls/create.html#L23
 
@@ -172,6 +172,10 @@ The given url is missing choice3 and choice4. The application expects empty stri
 
 https://github.com/jaakkoset/Cyber-security-project/blob/master/project/polls/database.py#L14
 
+This is what the overly informative error message looks like:
+
+https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw5-before.png
+
 To fix the problem, the line 27 in config/settings.py should be changed to DEBUG = False:
 
 https://github.com/jaakkoset/Cyber-security-project/blob/f2dc1d7b7223d1471fa29c871911025246425bac/project/config/settings.py#L26-L28
@@ -186,12 +190,12 @@ https://github.com/jaakkoset/Cyber-security-project/blob/f2dc1d7b7223d1471fa29c8
 
 After the fix, when the we use the URL link above, the error shown does not reveal anything it should not, as shown here:
 
-_url-link-to-screenshot_
+https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw5-after-DEBUG-False.png
 
-Lastly, we should also prevent the error from happening altogether, by validating the request data and returning an HTML status code for the user. (This aspect of the problem belongs more closely to the A10:2025 Mishandling of Exceptional Conditions category.) A fix for this is commented out here:
+Lastly, we should also prevent the error from happening altogether, by validating the request data and returning an appropriate HTML status code for the user. (This aspect of the problem belongs more closely to the A10:2025 Mishandling of Exceptional Conditions category.) A fix for this is commented out here:
 
-https://github.com/jaakkoset/Cyber-security-project/blob/f2dc1d7b7223d1471fa29c871911025246425bac/project/polls/views.py#L81-L90
+https://github.com/jaakkoset/Cyber-security-project/blob/992ce8c79cbf0740304d6cb833d75d38c3cc85c8/project/polls/views.py#L80-L90
 
-Now the server does not experience an error and an appropriate HTML status code is shown to the user:
+Now the server does not experience an error and the user is informed about the real reason of the problem:
 
-_url-link-to-screenshot_
+https://github.com/jaakkoset/Cyber-security-project/blob/master/screenshots/flaw5-after-validation.png
