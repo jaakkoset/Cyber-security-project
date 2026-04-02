@@ -87,7 +87,7 @@ def save_poll(request):
     #         "choice4": request.GET["choice4"],
     #     }
     # except:
-    #     return HttpResponse(content="Request data was malformed", status=400)
+    #     return HttpResponse(content="Request data was invalid", status=400)
 
     # Check that required inputs are not empty
     if not (
